@@ -21,7 +21,7 @@ public class PersonaController {
     }
 
     @GetMapping("/{id}")
-    public Persona getPersonById(@PathVariable String id) {
+    public Persona getPersonById(@PathVariable Integer id) {
 
         return personaService.getByID(id);
     }
@@ -32,8 +32,27 @@ public class PersonaController {
         personaService.add(persona);
     }
 
-    @DeleteMapping
-    public void deletePerson(@PathVariable String id){
+    @DeleteMapping("/{id}")
+    public void deletePerson(@PathVariable Integer id) {
         personaService.deleteById(id);
     }
+
+    @PutMapping("/{id}/jugadores/{idJugador}")
+    public Persona updatePerson(@PathVariable Integer id, @PathVariable Integer idJugador){
+        return personaService.addPlayerToListPlayers(id, idJugador);
+    }
+
+    @PutMapping("/{id}/amigo/{idAmigo}")
+    public Persona addAmigoToRepresentante(@PathVariable Integer id, @PathVariable Integer idAmigo){
+        return personaService.addAmigoToListAmigos(id, idAmigo);
+    }
+
+    @PutMapping("/{id}/cumpleanito/{idCumple}")
+    public Persona addCumpleanitoToSetPersona(@PathVariable Integer id, @PathVariable Integer idCumple){
+        return personaService.addCumpleanitoToPersona(id, idCumple);
+    }
+
+
+
+
 }

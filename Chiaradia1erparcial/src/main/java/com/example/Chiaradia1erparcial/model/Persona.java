@@ -7,13 +7,15 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.AccessType;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "typePersona", visible = true)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Representante.class, name = "REPRESENTANTE"),
-        @JsonSubTypes.Type(value = Jugador.class, name = "JUGADOR")
+        @JsonSubTypes.Type(value = Jugador.class, name = "JUGADOR"),
+        @JsonSubTypes.Type(value = Amigo.class, name = "AMIGO")
 })
 
 @Entity
@@ -25,15 +27,10 @@ public abstract class Persona {
     private Integer id;
     private String name;
     private String lastName;
+    @ManyToMany
+    private Set<Cumpleanito> cumpleanitos;
 
-    /*@AccessType(AccesType.Type.PROPERTY)
-    public abstract TypePersona typePersona();*/
-
-    /*--------- NO logre utilizar la java annotation ya que no la habia
-    importado y no encontre la dependencia ----------------*/
-
-    /*@AccessType()
-    public abstract TypePersona typePersona();*/
-
+    @AccessType(AccessType.Type.PROPERTY)
     public abstract TypePersona typePersona();
+
 }

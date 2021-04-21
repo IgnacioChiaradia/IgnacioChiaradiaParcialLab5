@@ -2,7 +2,8 @@ package com.example.Chiaradia1erparcial.model;
 
 public enum TypePersona {
     REPRESENTANTE("representante"),
-    JUGADOR("jugador");
+    JUGADOR("jugador"),
+    AMIGO("amigo");
 
     private String descripcion;
 
@@ -21,7 +22,6 @@ public enum TypePersona {
     }
 
     public String getDescripcion() {
-
         return descripcion;
     }
 
