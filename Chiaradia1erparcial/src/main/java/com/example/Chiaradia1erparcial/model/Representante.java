@@ -33,10 +33,10 @@ public class Representante extends Persona{
         for (Jugador jugador : Jugadores) {
             if(jugador.getCurrency() != null)
             {
-                if(jugador.getCurrency().getTypeCurrency() == TypeCurrency.DOLARES){
+                if(jugador.getCurrency().getTypeCurrency() == TypeCurrency.USD){
                     montoTotal += jugador.getCurrency().getMonto() * 150;
                 }
-                if(jugador.getCurrency().getTypeCurrency() == TypeCurrency.EUROS){
+                if(jugador.getCurrency().getTypeCurrency() == TypeCurrency.EUR){
                     montoTotal += jugador.getCurrency().getMonto() * 170;
                 }
             }

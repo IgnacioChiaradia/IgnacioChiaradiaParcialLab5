@@ -60,7 +60,7 @@ public class PersonaService {
     }
 
     public Amigo addAmigoToListAmigos(Integer id, Integer idAmigo) {
-        Persona amigo = getByID(id);
+        /*Persona amigo = getByID(id);
         Persona representante = getByID(id);
 
         if(amigo instanceof Amigo && representante instanceof Representante){
@@ -69,6 +69,7 @@ public class PersonaService {
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
+        }*/
+        return null;
     }
 }

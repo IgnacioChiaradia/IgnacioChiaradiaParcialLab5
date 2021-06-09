@@ -2,9 +2,8 @@ package com.example.Chiaradia1erparcial.model;
 
 public enum TypeCurrency {
 
-    DOLARES("dolares"),
-    EUROS("euros"),
-    REALES("reales");
+    USD("dolares"),
+    EUR("euros");
 
     private String descripcion;
 
