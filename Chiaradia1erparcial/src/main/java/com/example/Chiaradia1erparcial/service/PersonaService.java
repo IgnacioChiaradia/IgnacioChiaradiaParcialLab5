@@ -1,14 +1,20 @@
 package com.example.Chiaradia1erparcial.service;
 
+import com.example.Chiaradia1erparcial.api.ApiCallFutbolService;
+import com.example.Chiaradia1erparcial.api.ApiCallService;
 import com.example.Chiaradia1erparcial.model.*;
 import com.example.Chiaradia1erparcial.repository.CumpleanitoRepository;
 import com.example.Chiaradia1erparcial.repository.PersonaRepository;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -18,6 +24,8 @@ public class PersonaService {
     PersonaRepository personaRepository;
     @Autowired
     CumpleanitoRepository cumpleanitoRepository;
+    @Autowired
+    ApiCallFutbolService apiCallFutbolService;
 
     public List<Persona> getAll() {
         return personaRepository.findAll();
@@ -69,6 +77,24 @@ public class PersonaService {
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public void getlistaDeJugadores() throws IOException, InterruptedException {
+
+        JsonArray jsonJugadores = apiCallFutbolService.getJugadores();
+
+        for (int i = 0; i < jsonJugadores.size(); i++) {
+
+            //jsonJugadores.get(i).getAsJsonObject().get("firstaname");
+            Integer altura = Integer.parseInt(jsonJugadores.get(i).getAsJsonObject().get("height"));
+
+            Jugador jugador = new Jugador();
+
+            if((Integer)altura > 180){
+
+            }
+
         }
     }
 }
