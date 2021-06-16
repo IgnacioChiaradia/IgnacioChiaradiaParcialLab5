@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
 @Data
-
 @Entity
 public class Jugador extends Persona {
 

@@ -1,32 +1,37 @@
 package com.example.Chiaradia1erparcial.service;
 
-import com.example.Chiaradia1erparcial.controller.PersonaController;
+import com.example.Chiaradia1erparcial.api.ApiCallService;
 import com.example.Chiaradia1erparcial.exception.ErrorMasDeDiezInvitados;
-import com.example.Chiaradia1erparcial.model.Jugador;
-import com.example.Chiaradia1erparcial.model.Persona;
-import com.example.Chiaradia1erparcial.model.Representante;
+import com.example.Chiaradia1erparcial.model.*;
+import com.example.Chiaradia1erparcial.model.dto.PersonaDto;
 import com.example.Chiaradia1erparcial.repository.PersonaRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.example.Chiaradia1erparcial.model.Cumpleanito;
 import com.example.Chiaradia1erparcial.repository.CumpleanitoRepository;
 
 @Service
 public class CumpleanitoService {
 
-    @Autowired
     CumpleanitoRepository cumpleanitoRepository;
-    @Autowired
+
     PersonaRepository personaRepository;
+
+    ApiCallService apiCallService;
+
+    public CumpleanitoService(CumpleanitoRepository cumpleanitoRepository, PersonaRepository personaRepository, ApiCallService apiCallService){
+        this.cumpleanitoRepository = cumpleanitoRepository;
+        this.personaRepository = personaRepository;
+        this.apiCallService = apiCallService;
+    }
 
     public List<Cumpleanito> getAll() {
         return cumpleanitoRepository.findAll();
@@ -55,5 +60,35 @@ public class CumpleanitoService {
             throw new ErrorMasDeDiezInvitados("hay diez invitados cargados, debe crear otro cumpleanito");
         }
 
+    }
+
+    public Page<PersonaDto> getlistaDeInvitados(Pageable pageable) throws IOException, InterruptedException {
+        Page<Cumpleanito> cumpleanitos = cumpleanitoRepository.findAll(pageable);
+
+        Float dolarValue = apiCallService.getDolar();
+        Float euroValue = apiCallService.getEuro();
+
+        List<PersonaDto> listaDeInvitados = new ArrayList<>();
+
+        for (Cumpleanito c: cumpleanitos){
+            for (Persona invitado: c.getInvitados()){
+                if(invitado instanceof Jugador){
+                    PersonaDto personaInv = new PersonaDto();
+
+                    personaInv.setName(invitado.getName());
+                    Currency currency = ((Jugador)invitado).getCurrency();
+
+                    if(currency.getTypeCurrency() == TypeCurrency.EUR)
+                        personaInv.setAmount(25000 / dolarValue);
+                    else
+                        personaInv.setAmount(2500 / euroValue);
+
+                    personaInv.setCurrency(((Jugador)invitado).getCurrency());
+                    listaDeInvitados.add(personaInv);
+                }
+            }
+        }
+
+        return new PageImpl<PersonaDto>(listaDeInvitados, pageable, listaDeInvitados.size());
     }
 }

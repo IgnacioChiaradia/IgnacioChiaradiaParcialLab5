@@ -60,16 +60,15 @@ public class PersonaService {
     }
 
     public Amigo addAmigoToListAmigos(Integer id, Integer idAmigo) {
-        /*Persona amigo = getByID(id);
+        Persona amigo = getByID(idAmigo);
         Persona representante = getByID(id);
 
         if(amigo instanceof Amigo && representante instanceof Representante){
-            ((Representante) representante).getAmigos().add(amigo);
-            return personaRepository.save(amigo);
+            ((Representante) representante).getAmigos().add((Amigo)amigo);
+            return personaRepository.save((Amigo)amigo);
         }
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }*/
-        return null;
+        }
     }
 }
